@@ -42,6 +42,9 @@ class acf_field_autocomplete extends acf_field {
 		
 		if(!empty($field['autocomplete_options'])){
 			$autocomplete_options = preg_split("/\r\n|\n|\r/", $field['autocomplete_options']);
+			$autocomplete_options = array_filter($autocomplete_options, function($value){
+                		return strpos($value, $_REQUEST['request']) !== false;
+            		});
 			$results = array_unique(array_merge($autocomplete_options, $results));
         	}
 
