@@ -38,14 +38,23 @@ class acf_field_autocomplete extends acf_field {
          '%' . $_REQUEST['request'] . '%'
          ) );
                 
-		echo json_encode($results);
-
+		$field = acf_get_field( $_REQUEST['field_key']);
+		$autocomplete_options = preg_split("/\r\n|\n|\r/", $field['autocomplete_options']);
+        	$combined = array_unique(array_merge($autocomplete_options, $results));
+		echo json_encode($combined);
 
 		wp_die(); 
 		
 	}
 	
 	function render_field_settings( $field ) {
+		
+		acf_render_field_setting( $field, array(
+			'label'			=> __('Default autocomplete options','acf-autocomplete'),
+			'instructions'	=> __('Enter default autocomplete options separated on new lines.','acf-autocomplete'),
+			'type'			=> 'textarea',
+			'name'			=> 'autocomplete_options',
+		));
 		
 		acf_render_field_setting( $field, array(
 			'label'			=> __('Font Size','acf-autocomplete'),
