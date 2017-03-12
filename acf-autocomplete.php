@@ -39,9 +39,15 @@ class acf_field_autocomplete extends acf_field {
          ) );
                 
 		$field = acf_get_field( $_REQUEST['field_key']);
-		$autocomplete_options = preg_split("/\r\n|\n|\r/", $field['autocomplete_options']);
-        	$combined = array_unique(array_merge($autocomplete_options, $results));
-		echo json_encode($combined);
+		
+		if(!empty($field['autocomplete_options'])){
+			$autocomplete_options = preg_split("/\r\n|\n|\r/", $field['autocomplete_options']);
+			$results = array_unique(array_merge($autocomplete_options, $results));
+        	}
+
+        	sort($results);
+
+        	echo json_encode($results);
 
 		wp_die(); 
 		
